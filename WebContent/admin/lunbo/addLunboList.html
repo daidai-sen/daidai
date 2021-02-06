@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+        <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../js/css/layui.css">
+		<script type="text/javascript" src="../js/layui.js"></script>
+		<script type="text/javascript">
+		function hximg(){
+			var formdata =new FormData();
+			formdata.append('formFile',$("#upimg")[0].files[0]);
+			$.post({
+				url:"../../userbefore/carousel",
+				data:formdata,
+				contentType:false,
+				processData:false,
+				dataType:"text",
+				success:function(data){
+					$("img").attr("src","../../../imgfile/"+data);
+					$("#addimg").val(data);
+				}
+			})
+		}
+</script>
+</head>
+<body>
+ <form action="../../userbefore/carousel" method="get" enctype="multipart/form-data">
+  <input type="hidden" name="op" value="add">
+  <input id="addimg" type="hidden" name="nfile" value="">
+	    <table>
+	         <tr>
+	             <td>照片上传:</td>
+	             <td><input id="upimg" type="file" name="nfile1" onchange="hximg()">
+	                 <img alt="" src="" width="50" height="50">
+	             </td>
+	         </tr>
+	         <tr>
+	             <td><input type="submit" value="增加"></td>
+	         </tr>
+	    </table>
+	 </form> 
+</body>
+</html>

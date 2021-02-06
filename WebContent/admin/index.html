@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="js/css/layui.css">
+		<script type="text/javascript" src="js/layui.js"></script>
+		<script>
+			
+		</script> 
+	</head>
+	<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo">欢迎来到后台管理系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="">控制台</a></li>
+      <li class="layui-nav-item"><a href="">商品管理</a></li>
+      <li class="layui-nav-item"><a href="">用户</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它系统</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+          <dd><a href="">授权管理</a></dd>
+        </dl>
+      </li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          贤心
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="">退了</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">管理员管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="adminList.html" target="mm">管理员列表</a></dd>
+            <dd><a href="addAdminList.html" target="mm">新增管理员</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">用户管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="user/userList.html" target="mm">用户列表</a></dd>
+            <dd><a href="user/addUserList.html" target="mm">新增用户</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">类别管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="type/typeList.html" target="mm">类别列表</a></dd>
+          </dl>
+        </li>
+        
+        <li class="layui-nav-item">
+          <a href="javascript:;">产品管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="product/productList.html" target="mm">产品列表</a></dd>
+            <dd><a href="product/addProductList.html" target="mm">新增产品</a></dd>
+          </dl>
+        </li>
+        
+        <li class="layui-nav-item">
+          <a href="javascript:;">轮播管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="lunbo/lunboList.html" target="mm">轮播列表</a></dd>
+            <dd><a href="lunbo/addLunboList.html" target="mm">新增轮播</a></dd>
+          </dl>
+        </li>
+        
+        <li class="layui-nav-item">
+          <a href="javascript:;">购物车管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="cart/cartList.html" target="mm">购物车列表</a></dd>
+            <dd><a href="cart/addCartList.html" target="mm">新增购物车</a></dd>
+          </dl>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <iframe name="mm" src="adminList.html" width="1166" height="600"></iframe>
+  </div>
+  
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © layui.com - 底部固定区域
+  </div>
+</div>
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+	var element = layui.element;
+
+});
+</script>
+</body>
+</html>

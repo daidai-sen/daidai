@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../js/css/layui.css">
+		<script type="text/javascript" src="../js/layui.js"></script>
+		<script>
+			 layui.use('table', function(){
+			  var table = layui.table;
+			   //第一个实例
+			  table.render({
+			      elem: '#demo'
+			      ,height:312
+			      ,url: '../../userbefore/product' //数据接口
+			      ,page: true //开启分页
+			      ,cols: [[ //表头
+			        {field: 'id', title: 'ID', width:100, sort: true, fixed: 'left'}
+			        ,{field: 'pname', title: '产品名称', width:100}
+			        ,{field: 'pimg', title: '图片', width: 150,templet:'<div><img src="../../../pimgfile/{{ d.pimg}}"></div>'}
+			        ,{field: 'price', title: '价格', width:100, sort: true}
+			        ,{field: 'ptitle', title: '标题', width:100}
+			        ,{field: 'pv', title: '访问的次数', width: 150}
+			        ,{field: 'typename', title: '对应的类别', width: 150}
+			        ,{field: 'barDemo', title: '操作', width:200, toolbar: '#barDemo'}
+			        ]]
+			    });
+			  }); 
+			
+			$(function(){
+				$("#edit").click(function(){
+					$.get({
+						url:"../../userbefore/product",
+						data: $("#editform").serialize(),
+						dataType:"json",
+						success:function(data){	
+							
+							var code = data.code;
+							if(code=='0'){
+								confirm("修改成功");
+								location.href = "productList.html";
+							}
+							
+						}
+						
+					});
+				});
+			});
+			
+			 function hximg(){
+					var formdata =new FormData();
+					//var id = $("#ee").val();
+					formdata.append('formFile',$("#upimg")[0].files[0]);
+					$.post({
+						url:"../../userbefore/product",
+						data:formdata,
+						contentType:false,
+						processData:false,
+						dataType:"text",
+						success:function(data){
+							$("img").attr("src","../../../pimgfile/"+data);
+							$("#addimg").val(data);
+							//$("#ee").val(id);
+						}
+					})
+				} 
+			 
+			 layui.use(['form', 'table','layedit', 'laydate'], function(){
+				   var form = layui.form;
+				   var table = layui.table
+				   ,layer = layui.layer
+				   ,layedit = layui.layedit
+				   ,laydate = layui.laydate
+				   ,$ = layui.$;
+				   
+				   
+				   
+				   
+				   form.on('select(level1)', function(data){ 
+				    $.post({
+				    url:"../../userbefore/product",
+				    data:"op=two&parentid="+data.value,
+				    dataType:"json",
+				    success:function(da){
+				     $("#level2").html("<option>--二级标题--</option>");
+				     for(var i in da){
+				      var p = da[i];
+				      var n = p.title;
+				      var $op = $("<option value="+p.id+">"+n+"</option>");
+				      $("#level2").append($op);
+				     }
+				     
+				     layui.use(['element','form'], function() {
+				               var element = layui.element;
+				               element.init();
+				               var form = layui.form;
+				               form.render();
+				              });
+				    }
+				  });
+				 });
+				   
+				   
+				   form.on('select(level2)', function(data){ 
+				    $.post({
+				    url:"../../userbefore/product",
+				    data:"op=three&parentid="+data.value,
+				    dataType:"json",
+				    success:function(da){
+				     $("#level3").html("<option>--三级标题--</option>");
+				     for(var i in da){
+				      var p = da[i];
+				      var n = p.title;
+				      var $op = $("<option value="+p.id+">"+n+"</option>");
+				      $("#level3").append($op);
+				     }
+				     
+				     layui.use(['element','form'], function() {
+				               var element = layui.element;
+				               element.init();
+				               var form = layui.form;
+				               form.render();
+				              });
+				    }
+				  });
+				 });
+				});
+				 
+				 
+				
+			 
+				
+</script>
+</head>
+<body>
+<table id="demo" lay-filter="test"></table>
+		
+		<form style="display:none" id="editform" lay-filter="formTest" class="layui-form layui-form-pane" action="" enctype="multipart/form-data">
+		  <input type="hidden" name="op" value="edit">
+		  <input id="ee" type="hidden" name="id" value="">
+		  <input id="addimg" type="hidden" name="nfile" value="">
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">产品名称</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="pname" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  
+		   <div class="layui-form-item">
+		    <label class="layui-form-label">图片</label>
+		    <div class="layui-input-inline">
+		      <input id="upimg"  type="file" name="pimg" onchange="hximg()" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		      <img alt="" src="" width="50" height="50">
+		    </div>
+		  </div>  
+		  
+		  
+		  
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">价格</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="price" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  
+		   <div class="layui-form-item">
+		   <label class="layui-form-label">产品标题</label>
+		   <div class="layui-input-inline">
+		      <select id="level1" lay-filter="level1"  name="quiz1">
+		            
+		      </select>
+		   </div>
+		   <div class="layui-input-inline">
+		      <select id="level2" lay-filter="level2" name="quiz2" >
+		            
+		      </select>
+		   </div>
+		   <div class="layui-input-inline">
+		      <select id="level3" name="quiz3">
+		           
+		      </select>
+		   </div>
+		 </div>
+		  
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">访问的次数</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="pv" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">对应的类别</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="typeid" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  
+		   <div class="layui-form-item">
+		    <button id="edit" class="layui-btn" lay-submit="" lay-filter="demo2">修改</button>
+		  </div>
+		</form>
+		
+		<!-- 添加操作的两个按钮 编辑和删除 -->
+		<script type="text/html" id="barDemo">
+    		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</ a>
+    		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</ a>
+		</script>
+		
+		<script type="text/javascript">
+		/* 以下js代码使用layui的js来实现编辑和删除的功能 */
+		layui.use(['table','form'], function(){
+			  var table = layui.table;
+			  var form = layui.form;
+			  var $ = layui.$;
+			  table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			      var data = obj.data; //获得当前行数据
+			      var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+			      var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+			      if(layEvent === 'del'){ //删除
+			            layer.confirm('真的删除ID为：'+data.id+"的用户吗?", function(index){
+			            
+			                //console.log(data.p_id);
+			                //向服务端发送删除指令
+			                    $.ajax({
+			                        url:'../../userbefore/product',
+			                        type:'get',
+			                        data:{'id':data.id,'op':"delete"},//向服务端发送删除的id
+			                        dataType:'json',
+			                        success:function(data){
+			                        	var suc = data.code;
+			                            if(suc==0){
+			                                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+			                                layer.close(index);
+			                                console.log(index);
+			                                layer.msg("删除成功",{icon:1});
+			                            }
+			                            else{
+			                                layer.msg("删除失败",{icon:5});
+			                            }
+			                        }
+			                    });
+			                    layer.close(index); 
+			                     });
+			              
+			      } else if(layEvent === 'edit'){ //编辑
+			        console.log(data);
+			      
+			      
+			       
+			      
+			      
+			        $("#ee").val(data.id);
+			        var title = data.ptitle;
+			        var level = title.split("-");
+			        alert(level[1]);
+			        $("#level1").html("<option>"+level[0]+"</option>");
+			        $("#level2").html("<option>"+level[1]+"</option>");
+			        $("#level3").html("<option>"+level[2]+"</option>");
+			        
+			        $(function(){
+						 $.post({
+						  url:"../../userbefore/product",
+						  data:"op=one",
+						  dataType:"json",
+						  success:function(data){
+						   for(var i in data){
+						    var p = data[i];
+						    var n = p.title;
+						    if(n!=level[0]){
+						    	var $op = $("<option value="+p.id+">"+n+"</option>");
+							    $("#level1").append($op);
+						    }
+						    
+						   }
+						   
+						   layui.use('element', function() {
+						             var element = layui.element;
+						             element.init();
+						            });
+						   
+						   layui.use('form', function() {
+						             var form = layui.form;
+						             form.render();
+						            });
+						  }
+						 });
+						})
+			       
+			        
+			        
+			      					/* 打开上面隐藏的修改的form表单 */
+									layer.open({
+			                            type: 1,
+			                            area: ['500px', '400px'],
+			                            title: "更改信息",
+			                            fixed: false, //不固定
+			                            maxmin: true,
+			                            maxmin: false,
+			                            shadeClose:false,
+			                            content: $('#editform')
+			                          });
+			                          //表单值
+			                          form.val("formTest",{
+			                        	
+			                            "pname":data.pname,
+			                            "id":data.id,
+			                            "price":data.price,
+			                            "pv":data.pv,
+			                            
+			                            "typeid":data.typename,
+			                            "ptitle":data.ptitle,
+			                            "pimg":data.pimg
+			                            
+			                         });
+			                          
+			                          
+			                          
+			       
+			        }
+			    });
+			  
+			});
+		</script>
+</body>
+</html>

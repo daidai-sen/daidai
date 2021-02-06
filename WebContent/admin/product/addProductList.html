@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+        <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../js/css/layui.css">
+		<script type="text/javascript" src="../js/layui.js"></script>
+		<script type="text/javascript">
+		     $(function(){
+		    	 $("#add").click(function(){
+		    		 $.get({
+		    			 url:"../../userbefore/product",
+		    			 data:$("#addform").serialize(),
+		    			 dataType:"json",
+		    			 success:function(data){
+		    				 var code = data.code;
+		    				 if(code=='0'){
+		    					 confirm("添加成功");
+		    					 location.href="productList.html";
+		    				 }
+		    			 }
+		    		 })
+		    	 })
+		     })
+		     
+		    function hximg(){
+			var formdata =new FormData();
+			formdata.append('formFile',$("#upimg")[0].files[0]);
+			$.post({
+				url:"../../userbefore/product",
+				data:formdata,
+				contentType:false,
+				processData:false,
+				dataType:"text",
+				success:function(data){
+					$("img").attr("src","../../../pimgfile/"+data);
+					$("#addimg").val(data);
+				}
+			})
+		}
+		   
+		    //-------------------------------------------------
+	         layui.use(['form', 'layedit', 'laydate'], function(){
+			   var form = layui.form
+			   ,layer = layui.layer
+			   ,layedit = layui.layedit
+			   ,laydate = layui.laydate
+			   ,$ = layui.$;
+			   
+			   form.on('select(level1)', function(data){ 
+			    $.post({
+			    url:"../../userbefore/product",
+			    data:"op=two&parentid="+data.value,
+			    dataType:"json",
+			    success:function(da){
+			     $("#level2").html("<option>--二级标题--</option>");
+			     for(var i in da){
+			      var p = da[i];
+			      var n = p.title;
+			      var $op = $("<option value="+p.id+">"+n+"</option>");
+			      $("#level2").append($op);
+			     }
+			     
+			     layui.use(['element','form'], function() {
+			               var element = layui.element;
+			               element.init();
+			               var form = layui.form;
+			               form.render();
+			              });
+			    }
+			  });
+			 });
+			   
+			   
+			   form.on('select(level2)', function(data){ 
+			    $.post({
+			    url:"../../userbefore/product",
+			    data:"op=three&parentid="+data.value,
+			    dataType:"json",
+			    success:function(da){
+			     $("#level3").html("<option>--三级标题--</option>");
+			     for(var i in da){
+			      var p = da[i];
+			      var n = p.title;
+			      var $op = $("<option value="+p.id+">"+n+"</option>");
+			      $("#level3").append($op);
+			     }
+			     
+			     layui.use(['element','form'], function() {
+			               var element = layui.element;
+			               element.init();
+			               var form = layui.form;
+			               form.render();
+			              });
+			    }
+			  });
+			 });
+			});
+			 
+			 
+			$(function(){
+			 $.post({
+			  url:"../../userbefore/product",
+			  data:"op=one",
+			  dataType:"json",
+			  success:function(data){
+			   for(var i in data){
+			    var p = data[i];
+			    var n = p.title;
+			    var $op = $("<option value="+p.id+">"+n+"</option>");
+			    $("#level1").append($op);
+			   }
+			   
+			   layui.use('element', function() {
+			             var element = layui.element;
+			             element.init();
+			            });
+			   
+			   layui.use('form', function() {
+			             var form = layui.form;
+			             form.render();
+			            });
+			  }
+			 });
+			});
+	   
+		</script>
+</head>
+<body>
+<form id="addform" class="layui-form layui-form-pane" action="" enctype="multipart/form-data">
+  <input type="hidden" name="op" value="add">
+  <input id="addimg" type="hidden" name="nfile" value="">
+          <div class="layui-form-item">
+		    <label class="layui-form-label">产品名称</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="pname" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">图片</label>
+		    <div class="layui-input-inline">
+		      <input id="upimg" type="file" name="nfile1" onchange="hximg()" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		      <img alt="" src="" width="50" height="50">
+		    </div>
+		  </div>
+		  
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">价格</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="price" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  
+		  <div class="layui-form-item">
+		   <label class="layui-form-label">产品标题</label>
+		   <div class="layui-input-inline">
+		      <select id="level1" lay-filter="level1"  name="quiz1">
+		            <option>--一级标题--</option>
+		      </select>
+		   </div>
+		   <div class="layui-input-inline">
+		      <select id="level2" lay-filter="level2" name="quiz2" >
+		            <option>--二级标题--</option>
+		      </select>
+		   </div>
+		   <div class="layui-input-inline">
+		      <select id="level3" name="quiz3">
+		            <option>--三级标题--</option>
+		      </select>
+		   </div>
+		 </div>
+		  
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">访问的次数</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="pv" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">对应的类别</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="typeid" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+  
+  
+  <div class="layui-form-item">
+    <button id="add" class="layui-btn" lay-submit="" lay-filter="demo2">新增</button>
+  </div>
+</form>
+</body>
+</html>

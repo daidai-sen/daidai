@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../js/css/layui.css">
+		<script type="text/javascript" src="../js/layui.js"></script>
+		<script type="text/javascript">
+		     $(function(){
+		    	 $("#add").click(function(){
+		    		 $.post({
+		    			 url:"../../userbefore/cart",
+		    			 data:$("#addform").serialize(),
+		    			 dataType:"json",
+		    			 success:function(data){
+		    				 var code = data.code;
+		    				 if(code=='0'){
+		    					 confirm("添加成功");
+		    					 location.href="cartList.html";
+		    				 }
+		    			 }
+		    		 })
+		    	 })
+		     })
+		</script>
+</head>
+<body>
+<form id="addform" class="layui-form layui-form-pane" action="">
+  <input type="hidden" name="op" value="add">
+  <div class="layui-form-item">
+    <label class="layui-form-label">用户id</label>
+    <div class="layui-input-inline">
+      <input type="text" name="userid" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  
+  <div class="layui-form-item">
+    <label class="layui-form-label">产品id</label>
+    <div class="layui-input-inline">
+      <input type="text" name="productid" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  
+  
+  <div class="layui-form-item">
+    <button id="add" class="layui-btn" lay-submit="" lay-filter="demo2">新增</button>
+  </div>
+</form>
+</body>
+</html>

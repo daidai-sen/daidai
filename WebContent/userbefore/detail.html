@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+		<link rel="stylesheet" href="css/bootstrap.css" />
+
+		<!--需要引入JQuery-->
+		<script src="js/jquery-1.11.0.js"></script>
+		<script src="js/bootstrap-table.js"></script>
+		<link rel="stylesheet" href="js/bootstrap-table.css" />
+		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+		<script src="js/bootstrap.js"></script>
+
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!--
+			引入bootstrap相关的头文件
+			1. div布局容器  class = " container"
+			2. 放8行 row 
+		-->
+	<script>
+		$(function(){
+			
+			var id =document.location.href.toString().split("=")[1];
+			alert(id);
+		
+			$.ajax({
+				url:"../userbefore/product",
+				dataType:"json",
+				page:true,
+				data:{
+					"page":1,
+					"limit":12
+				},
+				success:function(data){
+					for(var i in data.data){
+						var a = data.data[i];
+						var pid= a.id;
+						var p = a.pimg;
+						var n = a.pname;
+						var price = a.price;
+						var aa=a.typename;
+						if(id==pid){
+							var op = $("<img src='../../pimgfile/"+p+" ' style='margin-left: 10px;'> ");
+						    var ot = $("<p>标题："+aa+"</p>");
+						}
+						$("#spjs").append(ot);
+						$("#bbyl").append(op);
+					}
+				}
+			})
+			
+			$.ajax({
+				    type:"post",
+				    url:"../loginuser",
+				    data:"op=hq",
+				    dataType:"json",
+					success:function(data){
+						var userid=data.id;
+						$("#yc").val(userid);
+					}
+				})
+				
+				$("#jr").click(function(){
+				    var id =document.location.href.toString().split("=")[1];
+				    alert(id);
+					var ab =$("#yc").val();
+					alert(ab);
+					$.ajax({
+						type:"post",
+						url:"../userbefore/cart",
+						dataType:"json",
+						page:true,
+						data:{
+							"op":"add",
+							"productid":id,
+							"userid":ab
+						},
+						success:function(){
+							confirm("添加成功");
+						}
+					})
+					
+				}) 
+			
+		})
+		
+		
+	</script>
+	</head>
+
+	<body>
+	<input id="yc" type="hidden" name="userid" value="">
+		<!--最外层的布局容器-->
+		<div class="container">
+			<!--LOGO部分-->
+			<div class="row">
+				<!--<div class="col-md-4 col-sm-6 col-xs-6">
+					<img src="img/back.jpg" style="height: 6rem;"/>
+				</div>-->
+				<div class="col-md-4 hidden-sm hidden-xs">
+					<img src="img/back.jpg" style="height: 6rem; width: 1140px;" />
+				</div>
+				
+			</div>
+
+			
+			
+			
+			<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<nav class="navbar  navbar-dark fixed-top"id="navbar-example2">  
+  <a class="navbar-brand"href="index.html"><
+</a>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="#section1">宝贝预览</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#section2">商品介绍</a>
+    </li>
+  </ul>
+</nav>
+<div id="section1" class="container-fluid bg-light" style="padding-top:10px;padding-bottom:10px">
+  <h1>宝贝预览</h1>
+  <p id="bbyl"></p>
+</div>
+<div id="section2" class="container-fluid bg-light" style="padding-top:10px;padding-bottom:10px">
+  <h1>商品介绍</h1>
+  <p id="spjs"></p>
+</div>
+<button id="jr" type="button" class="btn btn-danger">加入购物车</button>
+    </body>
+</html>
+			
+			<!-- footer -->
+			<!--<div class="row">
+				<div class="col-md-12">
+					<img src="img/11.jpg" width="100%"/>
+				</div>
+			</div>-->
+			
+			
+			<div style="text-align: center;">
+				        
+					<a href="#">关于我们</a>
+					<a href="#">联系我们</a>
+					<a href="#">招贤纳士</a>
+					<a href="#">法律声明</a>
+					<a href="#">友情链接</a>
+					<a href="#">支付方式</a>
+					<a href="#">配送方式</a>
+					<a href="#">服务声明</a>
+					<a href="#">广告声明</a>
+					
+					<br />
+					
+					Copyright © 2005-2020老徐商城 版权所有
+			</div>
+			
+		</div>
+	</body>
+
+</html>

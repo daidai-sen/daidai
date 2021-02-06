@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<settings>
+   <!--驼峰命名规则  -->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+   <!--  <setting name="cacheEnabled" value="true"/> -->
+    <!--开启懒加载  -->
+   <!--  <setting name="lazyLoadingEnabled" value="true"/> -->
+    <!-- 开启二级缓存 -->
+    <!-- <setting name="cacheEnabled" value="true"/> -->
+</settings>
+
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://10.10.12.59:3306/lvyou?useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+  <package name="com.lanou.dao"/>
+   <!--  <mapper resource="UserMapper.xml"/> -->
+  </mappers>
+</configuration>

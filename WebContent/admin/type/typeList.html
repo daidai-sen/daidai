@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../js/css/layui.css">
+	<script type="text/javascript" src="../js/layui.js"></script>
+	<script>
+layui.use(['tree', 'util'], function(){
+  var tree = layui.tree
+  ,layer = layui.layer
+  ,util = layui.util
+  ,$ = layui.$;
+  
+  $.post({
+		url:"../../userbefore/type",
+		dataType:"json",
+		success:function(o){	
+			
+			var parentid;
+			
+			var addparentid;
+			
+			//开启节点操作图标
+			  tree.render({
+			    elem: '#test9'
+			    ,data: o.data
+			    ,edit: ['add', 'update', 'del'] //操作节点的图标
+			    ,operate: function (obj) {
+					var type = obj.type; //得到操作类型：add、edit、del
+					var data = obj.data; //得到当前节点的数据
+					var elem = obj.elem; //得到当前节点元素
+
+					//Ajax 操作
+					var id = data.id; //得到节点索引
+					if (type === 'add') { //增加节点
+						parentid = id;
+						
+
+					} else if (type === 'update') { //修改节点
+						alert(id);
+						$("#Title").val(data.title);
+						$.ajax({
+							url: '../../userbefore/type',
+							type: 'post',
+							dataType: 'json',
+							data: {
+								op:'action',
+								id:id,//如果是新增过来的修改 为null
+								parentid: parentid,
+								title:data.title
+							},
+							success: function (r) {
+								if (r.code > 0) {
+									layer.msg('操作成功', { icon: 6 });
+									
+								} else {
+									layer.msg('操作失败', { icon: 5 });
+								}
+							},
+							error: function (s) {
+								layer.msg('操作出错了');
+							}
+						});
+						
+					} else if (type === 'del') { //删除节点
+						$.ajax({
+							url: '../../userbefore/type',
+							type: 'post',
+							dataType: 'json',
+							data: {
+								op:'del',
+								id: id
+							},
+							success: function (r) {
+								if (r.code > 0) {
+									layer.msg('删除成功', { icon: 6 });
+								} else {
+									layer.msg('删除失败', { icon: 5 });
+								}
+							},
+							error: function (s) {
+								layer.msg('删除出错了');
+							}
+						});
+					};
+				}
+			  });
+			
+		}
+		
+	});
+  
+  
+});
+</script>
+</head>
+<body>
+	<div id="test9" class="demo-tree demo-tree-box" style="width: 500px; height: 600px; overflow: scroll;"></div>
+</body>
+</html>
